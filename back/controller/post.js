@@ -1,19 +1,32 @@
 
 exports.post=function (req, res){
-    {
+    
         var fs = require('fs');
         var sa = fs.readFileSync("./Model/note.json", "utf8");
         var obj = JSON.parse(sa)
-        obj.push({
-            id: obj[obj.length-1].id +1, nom: req.body.nom,
-            prenom: req.body.prenom,
-        })
-    
-        res.send(obj);
-        res.end()
+        if(req.body.nom && req.body.prenom ){
+            if(obj.length==0){
+                obj.push({
+                    id: 0, nom: req.body.nom,
+                    prenom: req.body.prenom,
+                })
+            }
+            else if(obj.length>0){
+                obj.push({
+                    id: obj[obj.length-1].id +1, nom: req.body.nom,
+                    prenom: req.body.prenom,
+                })
+            }
+        }
+   
+       
+        
+        //  res.send(obj);
+        //   res.end()
         fs.writeFileSync("./Model/note.json", JSON.stringify(obj))
+          res.redirect("http://localhost:3000/test") 
     }
-}
+
 exports.delet=function (req, res) {
     var fs = require('fs');
     var sa = fs.readFileSync("./Model/note.json", "utf8");
@@ -32,9 +45,10 @@ exports.delet=function (req, res) {
 
     }
 
-    res.send(obj);
-    res.end()
+    //  res.send(obj);
+    //  res.end()
     fs.writeFileSync("./Model/note.json", JSON.stringify(obj))
+    res.redirect("http://localhost:3000/test")
 }
 exports.get=function (req, res) {
     res.setHeader('Content-Type', 'text/plain');
@@ -75,7 +89,8 @@ let prenom=req.body.prenom
 
     }
 
-    res.send(obj);
-    res.end()
+//     res.send(obj);
+//   res.end()
     fs.writeFileSync("./Model/note.json", JSON.stringify(obj))
+    res.redirect("http://localhost:3000/test")
 }
